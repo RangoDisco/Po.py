@@ -1,3 +1,4 @@
+import math
 import os
 import discord
 import random
@@ -40,10 +41,10 @@ class Popy(commands.Bot):
                 response = requests.get(
                     os.getenv("BASE_URL") + searched_city + "&lang=fr&appid=" + os.getenv("API_KEY"))
                 data = response.json()
-                print(data)
-                await message.channel.send(f"Il fait ${data['main']['temp']} à {data['name']}")
+                temp = math.floor(data['main']['temp'] - 273)
+                await message.channel.send(f"Il fait {temp} à {data['name']}")
 
-            except ValueError:
+            except KeyError:
                 await message.channel.send('Ville non trouvée')
 
 
