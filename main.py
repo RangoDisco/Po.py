@@ -1,6 +1,7 @@
 import os
 import discord
 import random
+import requests
 from dotenv import load_dotenv
 from discord.ext import commands
 
@@ -33,6 +34,17 @@ class Popy(commands.Bot):
                 await message.channel.send(random.randint(min_val, max_val))
             except ValueError:
                 await message.channel.send("Format non valide")
+        if message.content.lower().startswith(f"{popy.command_prefix}meteo"):
+            try:
+                searched_city = message.content.split(" ", 3)[1:2][0]
+                response = requests.get(
+                    os.getenv("BASE_URL") + searched_city + "&lang=fr&appid=" + os.getenv("API_KEY"))
+                data = response.json()
+                print(data)
+                await message.channel.send(f"Il fait ${data['main']['temp']} à {data['name']}")
+
+            except ValueError:
+                await message.channel.send('Ville non trouvée')
 
 
 popy = Popy()
