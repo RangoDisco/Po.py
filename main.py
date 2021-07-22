@@ -42,7 +42,7 @@ class Popy(commands.Bot):
                     os.getenv("BASE_URL") + searched_city + "&lang=fr&appid=" + os.getenv("API_KEY"))
                 data = response.json()
                 temp = math.floor(data['main']['temp'] - 273)
-                await message.channel.send(f"Il fait {temp} à {data['name']}")
+                await message.channel.send(f"Il fait {temp}°C à {data['name']}, {data['sys']['country']}")
 
             except KeyError:
                 await message.channel.send('Ville non trouvée')
